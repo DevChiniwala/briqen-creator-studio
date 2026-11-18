@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useEditorStore } from '@/state/store';
-import { selectExportReady, selectExportBlockReason, selectApprovedCount, selectAssetDisplay } from '@/state/selectors';
+import { selectExportReady, selectExportBlockReason, selectAssetDisplay } from '@/state/selectors';
 import styles from './Storyboard.module.css';
 
 const SCENE_LABELS: Record<string, string> = { s1: '01', s2: '02' };
@@ -21,10 +21,8 @@ export function Storyboard({ onToast }: { onToast: (msg: string) => void }) {
   const generationSucceeded = useEditorStore((s) => s.generationSucceeded);
   const reset = useEditorStore((s) => s.reset);
 
-  const state = useEditorStore.getState();
-  const exportReady = selectExportReady(state);
-  const blockReason = selectExportBlockReason(state);
-  const approvedCount = selectApprovedCount(state);
+  const exportReady = useEditorStore(selectExportReady);
+  const blockReason = useEditorStore(selectExportBlockReason);
 
   const [dragOverId, setDragOverId] = useState<string | null>(null);
 
@@ -82,11 +80,7 @@ export function Storyboard({ onToast }: { onToast: (msg: string) => void }) {
     const s2Job = jobsBySceneId['s2'];
     const s2Scene = scenesById['s2'];
     if (s2Job && s2Scene) {
-      if (s2Job.inputRevision === s2Scene.contentRevision) {
-        generationSucceeded('s2', s2Job.jobId, `generated_${Date.now()}`);
-      } else {
-        generationSucceeded('s2', s2Job.jobId, `generated_${Date.now()}`);
-      }
+      generationSucceeded('s2', s2Job.jobId, `generated_${Date.now()}`);
       selectScene('s2');
       onToast('Example job completed. Approve to export.');
     }
@@ -164,14 +158,14 @@ export function Storyboard({ onToast }: { onToast: (msg: string) => void }) {
                 <div className={styles.moveActions}>
                   <button
                     className={styles.moveBtn}
-                    onClick={(e) => handleMove(e as unknown as React.MouseEvent, id, -1)}
+                    onClick={(e) => handleMove(e, id, -1)}
                     aria-label={`Move Scene ${sceneDisplayNum(id)} earlier`}
                   >
                     ←
                   </button>
                   <button
                     className={styles.moveBtn}
-                    onClick={(e) => handleMove(e as unknown as React.MouseEvent, id, 1)}
+                    onClick={(e) => handleMove(e, id, 1)}
                     aria-label={`Move Scene ${sceneDisplayNum(id)} later`}
                   >
                     →

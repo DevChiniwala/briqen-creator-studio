@@ -9,7 +9,7 @@
 npx vitest run
 ```
 
-**Result:** 51 tests passed, 0 failed
+**Result:** 72 tests passed, 0 failed
 
 | Suite | Tests | Status |
 |-------|-------|--------|
@@ -21,8 +21,14 @@ npx vitest run
 | `store.test.ts` — generationFailed | 4 | Pass |
 | `store.test.ts` — approveCandidate | 4 | Pass |
 | `store.test.ts` — setMediaType | 3 | Pass |
-| `store.test.ts` — full scenario | 3 | Pass |
-| `selectors.test.ts` | 15 | Pass |
+| `store.test.ts` — selectScene | 3 | Pass |
+| `store.test.ts` — updateTitle | 3 | Pass |
+| `store.test.ts` — reorderDrop | 4 | Pass |
+| `store.test.ts` — replaceAsset | 4 | Pass |
+| `store.test.ts` — full scenario | 4 | Pass |
+| `selectors.test.ts` — existing | 15 | Pass |
+| `selectors.test.ts` — selectSelectedScene | 3 | Pass |
+| `selectors.test.ts` — selectActiveJob | 3 | Pass |
 
 ### Key Invariants Verified
 
@@ -39,7 +45,7 @@ npx vitest run
 npx playwright test
 ```
 
-**Result:** 8 tests passed, 0 failed
+**Result:** 9 tests passed, 0 failed
 
 | # | Test | Status |
 |---|------|--------|
@@ -47,6 +53,7 @@ npx playwright test
 | 2 | Fail generation preserves all edits and Scene 1 approved asset | Pass |
 | 3 | Retry creates new attempt with current script, preserves edits | Pass |
 | 4 | Success marks as succeeded but does not auto-approve | Pass |
+| 4b | Approve after success enables export | Pass |
 | 5 | Reset restores initial state | Pass |
 | 6 | Screenshot: generating state | Pass |
 | 7 | Screenshot: failed state | Pass |

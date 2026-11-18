@@ -21,8 +21,8 @@
 | 15 | First component to implement | SceneCard identified | ✓ Met | - |
 | 16 | One user test with observable criterion | In existing PDF | ✓ Met | - |
 | 17 | Walkthrough-induced change | Toast → inline recovery card | ✓ Met | - |
-| 18 | Prior work reference | Not in existing prototype | ✗ Missing | Needs to be added to PDF |
-| 19 | AI disclosure | Exists as appendix PDF | ✓ Met | Needs update for this session |
+| 18 | Prior work reference | In PDF under "Prior work" section | ✓ Met | - |
+| 19 | AI disclosure | Exists as appendix PDF | ✓ Met | - |
 | 20 | Two-page limit | Existing PDF is 2 pages | ✓ Met | - |
 
 ## Top 5 Improvements Made

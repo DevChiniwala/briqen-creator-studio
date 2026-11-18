@@ -17,6 +17,7 @@ declare global {
       fail: () => void;
       retry: () => void;
       success: () => void;
+      approve: () => void;
       reset: () => void;
     };
   }
@@ -54,6 +55,9 @@ function EditorApp() {
           state.generationSucceeded('s2', job.jobId, `generated_${Date.now()}`);
           state.selectScene('s2');
         }
+      },
+      approve: () => {
+        store.getState().approveCandidate('s2');
       },
       reset: () => store.getState().reset(),
     };

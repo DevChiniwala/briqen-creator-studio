@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useEditorStore } from '@/state/store';
 import styles from './ReplaceModal.module.css';
 
@@ -15,6 +15,15 @@ const ASSETS = [
 
 export function ReplaceModal({ open, sceneId, onClose }: ReplaceModalProps) {
   const replaceAsset = useEditorStore((s) => s.replaceAsset);
+
+  useEffect(() => {
+    if (!open) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [open, onClose]);
 
   const handleSelect = useCallback(
     (assetId: string, assetName: string) => {

@@ -153,7 +153,7 @@ export const useEditorStore = create<EditorStore>()(
             jobsBySceneId: {
               ...state.jobsBySceneId,
               [sceneId]: currentJob
-                ? { ...currentJob, status: 'succeeded' as const }
+                ? { ...currentJob, status: 'succeeded' as const, jobId: `replaced_${Date.now()}` }
                 : {
                     jobId: `replaced_${Date.now()}`,
                     sceneId,

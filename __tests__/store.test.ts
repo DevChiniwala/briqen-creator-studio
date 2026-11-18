@@ -328,4 +328,144 @@ describe('full scenario', () => {
     store().approveCandidate('s2');
     expect(store().scenesById.s2.approvedAssetId).toBeNull();
   });
+
+  it('reorder + trim during generation, then fail preserves everything', () => {
+    // Initial: order [s2, s1], s2 running at 3s
+    expect(store().sceneOrder).toEqual(['s2', 's1']);
+    expect(store().jobsBySceneId.s2.status).toBe('running');
+    const jobIdBefore = store().jobsBySceneId.s2.jobId;
+
+    // Reorder: move s1 ahead
+    store().reorder('s1', -1);
+    expect(store().sceneOrder).toEqual(['s1', 's2']);
+    expect(store().jobsBySceneId.s2.status).toBe('running');
+    expect(store().jobsBySceneId.s2.jobId).toBe(jobIdBefore);
+
+    // Trim s2 duration
+    store().adjustDuration('s2', -0.5);
+    expect(store().scenesById.s2.durationSec).toBe(2.5);
+    expect(store().jobsBySceneId.s2.status).toBe('running');
+    expect(store().jobsBySceneId.s2.jobId).toBe(jobIdBefore);
+
+    // Fail s2
+    store().generationFailed('s2', jobIdBefore, 'GPU error');
+    expect(store().sceneOrder).toEqual(['s1', 's2']);
+    expect(store().scenesById.s2.durationSec).toBe(2.5);
+    expect(store().scenesById.s1.approvedAssetId).toBe('asset_approved_01');
+    expect(store().jobsBySceneId.s2.status).toBe('failed');
+  });
+});
+
+describe('selectScene', () => {
+  it('sets selectedSceneId when scene exists', () => {
+    expect(store().selectedSceneId).toBe('s2');
+    store().selectScene('s1');
+    expect(store().selectedSceneId).toBe('s1');
+  });
+
+  it('is no-op when sceneId does not exist', () => {
+    const before = store().selectedSceneId;
+    store().selectScene('nonexistent');
+    expect(store().selectedSceneId).toBe(before);
+  });
+
+  it('does not change sceneOrder or scenesById', () => {
+    const orderBefore = [...store().sceneOrder];
+    const scenesBefore = structuredClone(store().scenesById);
+    store().selectScene('s1');
+    expect(store().sceneOrder).toEqual(orderBefore);
+    expect(store().scenesById).toEqual(scenesBefore);
+  });
+});
+
+describe('updateTitle', () => {
+  it('changes only the title field', () => {
+    const before = structuredClone(store().scenesById.s2);
+    store().updateTitle('s2', 'New title');
+    const after = store().scenesById.s2;
+    expect(after.title).toBe('New title');
+    expect(after.script).toBe(before.script);
+    expect(after.contentRevision).toBe(before.contentRevision);
+    expect(after.durationSec).toBe(before.durationSec);
+  });
+
+  it('is no-op when sceneId does not exist', () => {
+    const before = structuredClone(store().scenesById);
+    store().updateTitle('nonexistent', 'New title');
+    expect(store().scenesById).toEqual(before);
+  });
+
+  it('does not change jobsBySceneId or sceneOrder', () => {
+    const jobsBefore = structuredClone(store().jobsBySceneId);
+    const orderBefore = [...store().sceneOrder];
+    store().updateTitle('s2', 'Changed');
+    expect(store().jobsBySceneId).toEqual(jobsBefore);
+    expect(store().sceneOrder).toEqual(orderBefore);
+  });
+});
+
+describe('reorderDrop', () => {
+  it('moves source before target', () => {
+    // Initial: [s2, s1] — drop s1 before s2
+    store().reorderDrop('s1', 's2');
+    expect(store().sceneOrder).toEqual(['s1', 's2']);
+  });
+
+  it('is no-op when sourceId equals targetId', () => {
+    const before = [...store().sceneOrder];
+    store().reorderDrop('s1', 's1');
+    expect(store().sceneOrder).toEqual(before);
+  });
+
+  it('is no-op when sourceId does not exist', () => {
+    const before = [...store().sceneOrder];
+    store().reorderDrop('nonexistent', 's1');
+    expect(store().sceneOrder).toEqual(before);
+  });
+
+  it('does not change jobsBySceneId', () => {
+    const before = structuredClone(store().jobsBySceneId);
+    store().reorderDrop('s1', 's2');
+    expect(store().jobsBySceneId).toEqual(before);
+  });
+});
+
+describe('replaceAsset', () => {
+  it('sets approvedAssetId and approvedAssetName on scene', () => {
+    store().replaceAsset('s2', 'library_coast', 'Coastal morning');
+    expect(store().scenesById.s2.approvedAssetId).toBe('library_coast');
+    expect(store().scenesById.s2.approvedAssetName).toBe('Coastal morning');
+  });
+
+  it('with existing job sets status to succeeded and assigns new jobId', () => {
+    const oldJobId = store().jobsBySceneId.s2.jobId;
+    store().replaceAsset('s2', 'library_coast', 'Coastal morning');
+    const job = store().jobsBySceneId.s2;
+    expect(job.status).toBe('succeeded');
+    expect(job.jobId).not.toBe(oldJobId);
+    expect(job.jobId).toMatch(/^replaced_/);
+  });
+
+  it('without existing job creates synthetic job entry', () => {
+    // Remove s2 job to simulate no-job state
+    useEditorStore.setState({
+      jobsBySceneId: { s1: store().jobsBySceneId.s1 },
+    });
+    expect(store().jobsBySceneId.s2).toBeUndefined();
+
+    store().replaceAsset('s2', 'lib_studio', 'Lavender studio');
+    const job = store().jobsBySceneId.s2;
+    expect(job).toBeDefined();
+    expect(job.jobId).toMatch(/^replaced_/);
+    expect(job.status).toBe('succeeded');
+    expect(job.candidateAssetId).toBe('lib_studio');
+  });
+
+  it('is no-op when sceneId does not exist', () => {
+    const scenesBefore = structuredClone(store().scenesById);
+    const jobsBefore = structuredClone(store().jobsBySceneId);
+    store().replaceAsset('nonexistent', 'a1', 'name');
+    expect(store().scenesById).toEqual(scenesBefore);
+    expect(store().jobsBySceneId).toEqual(jobsBefore);
+  });
 });

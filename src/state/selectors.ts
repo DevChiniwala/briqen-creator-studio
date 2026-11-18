@@ -1,6 +1,6 @@
 import type { EditorState, Scene, GenerationAttempt, JobStatus } from '../types';
 
-export function selectSelectedScene(state: EditorState): Scene {
+export function selectSelectedScene(state: EditorState): Scene | undefined {
   return state.scenesById[state.selectedSceneId];
 }
 
@@ -45,7 +45,7 @@ export function selectAssetDisplay(
     idle: ['empty', '✦ Media not ready', 'Generate or replace the asset to continue.'],
     queued: ['run', '✦ Queued for generation', 'Your scene is in the queue.'],
     running: ['run', `✦ Generating ${scene.mediaType}`, 'Processing in the background. Your edits remain available.'],
-    failed: ['fail', '⚠ Generation failed', 'The video was not created. Retry this scene or replace its asset. Your edits are safe.'],
+    failed: ['fail', '⚠ Generation failed', `The ${scene.mediaType} was not created. Retry this scene or replace its asset. Your edits are safe.`],
     succeeded: ['ready', '✦ Ready for review', 'Generation completed. Approve the asset to include it in export.'],
     outdated: ['stale', '↻ Outdated generation', 'This asset was made for an older script. Regenerate using the latest script.'],
   };

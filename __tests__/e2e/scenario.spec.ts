@@ -67,6 +67,20 @@ test.describe('Briqen Creator Studio — Full Scenario', () => {
     await expect(exportBtn).toBeDisabled();
   });
 
+  test('4b. Approve after success enables export', async ({ page }) => {
+    await page.evaluate(() => window.__briqenDemo?.fail());
+    await page.evaluate(() => window.__briqenDemo?.retry());
+    await page.evaluate(() => window.__briqenDemo?.success());
+
+    await page.evaluate(() => window.__briqenDemo?.approve());
+
+    const state = await page.evaluate(() => window.__briqenDemo?.getState());
+    expect(state!.scenesById.s2.approvedAssetId).toBeTruthy();
+
+    const exportBtn = page.locator('button:has-text("Export draft")');
+    await expect(exportBtn).toBeEnabled();
+  });
+
   test('5. Reset restores initial state', async ({ page }) => {
     await page.evaluate(() => window.__briqenDemo?.fail());
     await page.evaluate(() => window.__briqenDemo?.reset());

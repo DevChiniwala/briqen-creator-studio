@@ -9,17 +9,19 @@ export function useToast() {
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [message, setMessage] = useState('');
   const [visible, setVisible] = useState(false);
+  const [counter, setCounter] = useState(0);
 
   const show = useCallback((msg: string) => {
     setMessage(msg);
     setVisible(true);
+    setCounter((c) => c + 1);
   }, []);
 
   useEffect(() => {
     if (!visible) return;
     const timer = setTimeout(() => setVisible(false), 2800);
     return () => clearTimeout(timer);
-  }, [visible, message]);
+  }, [visible, counter]);
 
   return (
     <ToastContext.Provider value={show}>

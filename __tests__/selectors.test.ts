@@ -5,6 +5,8 @@ import {
   selectTotalDuration,
   selectExportBlockReason,
   selectAssetDisplay,
+  selectSelectedScene,
+  selectActiveJob,
 } from '../src/state/selectors';
 import type { EditorState, Scene, GenerationAttempt } from '../src/types';
 
@@ -168,5 +170,59 @@ describe('selectAssetDisplay', () => {
     const job = makeJob({ status: 'idle' });
     const [status] = selectAssetDisplay(scene, job);
     expect(status).toBe('empty');
+  });
+});
+
+describe('selectSelectedScene', () => {
+  it('returns the scene matching selectedSceneId', () => {
+    const state = makeState({ selectedSceneId: 's1' });
+    const scene = selectSelectedScene(state);
+    expect(scene).toBeDefined();
+    expect(scene!.id).toBe('s1');
+  });
+
+  it('returns undefined when selectedSceneId points to missing scene', () => {
+    const state = makeState({ selectedSceneId: 'nonexistent' });
+    const scene = selectSelectedScene(state);
+    expect(scene).toBeUndefined();
+  });
+
+  it('returns correct scene after changing selectedSceneId', () => {
+    const state1 = makeState({ selectedSceneId: 's1' });
+    expect(selectSelectedScene(state1)!.id).toBe('s1');
+
+    const state2 = makeState({ selectedSceneId: 's2' });
+    expect(selectSelectedScene(state2)!.id).toBe('s2');
+  });
+});
+
+describe('selectActiveJob', () => {
+  it('returns the job for an existing scene', () => {
+    const state = makeState();
+    const job = selectActiveJob(state, 's2');
+    expect(job).toBeDefined();
+    expect(job!.sceneId).toBe('s2');
+    expect(job!.status).toBe('running');
+  });
+
+  it('returns undefined when no job exists for sceneId', () => {
+    const state = makeState({
+      jobsBySceneId: {
+        s1: makeJob({ sceneId: 's1', status: 'succeeded' }),
+      },
+    });
+    const job = selectActiveJob(state, 's2');
+    expect(job).toBeUndefined();
+  });
+
+  it('returns correct status for different job states', () => {
+    const state = makeState({
+      jobsBySceneId: {
+        s1: makeJob({ sceneId: 's1', status: 'succeeded' }),
+        s2: makeJob({ sceneId: 's2', status: 'failed' }),
+      },
+    });
+    expect(selectActiveJob(state, 's1')!.status).toBe('succeeded');
+    expect(selectActiveJob(state, 's2')!.status).toBe('failed');
   });
 });
