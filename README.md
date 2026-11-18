@@ -11,7 +11,7 @@ Built for the Briqen AI Product Engineering internship exercise.
 ```bash
 npm install
 npm run dev          # Vite dev server at localhost:5173
-npm test             # Vitest unit tests (72 tests)
+npm test             # Vitest unit tests (75 tests)
 npm run build        # Production build
 npm run pdf          # Generate submission PDFs (requires Playwright)
 ```
