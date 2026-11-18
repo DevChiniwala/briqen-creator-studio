@@ -1,0 +1,28 @@
+.page {
+  max-width: 1600px;
+  margin: 5px auto 40px;
+  padding: 0 42px;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(285px, 0.9fr) minmax(420px, 1.47fr) minmax(278px, 0.84fr);
+  gap: 16px;
+  align-items: stretch;
+}
+
+@media (max-width: 1100px) {
+  .workspace {
+    grid-template-columns: 1fr 1.35fr;
+  }
+}
+
+@media (max-width: 730px) {
+  .page {
+    padding: 0 14px;
+  }
+
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+}

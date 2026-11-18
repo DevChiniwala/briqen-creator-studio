@@ -1,0 +1,139 @@
+.panel {
+  background: rgba(255, 255, 255, 0.91);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 25px 23px;
+  min-height: 525px;
+  min-width: 0;
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 26px;
+}
+
+.headingTitle {
+  font-size: 16px;
+  letter-spacing: -0.4px;
+  margin: 0;
+  font-weight: 750;
+}
+
+.sceneNum {
+  color: #a3a0ab;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.label {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 650;
+  letter-spacing: 0.1px;
+}
+
+.sceneTitle {
+  font-size: 24px;
+  letter-spacing: -0.8px;
+  font-weight: 750;
+  line-height: 1.2;
+  margin: 14px 0 9px;
+}
+
+.description {
+  color: #8c8794;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.scriptBox {
+  resize: vertical;
+  display: block;
+  width: 100%;
+  min-height: 180px;
+  margin-top: 16px;
+  background: #faf9fc;
+  border: 1px solid #e9e6ee;
+  border-radius: 18px;
+  padding: 17px;
+  color: #3c3746;
+  font-size: 14px;
+  line-height: 1.8;
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.scriptBox:focus {
+  background: var(--white);
+  border-color: #9385e1;
+  box-shadow: 0 0 0 4px #f2efff;
+}
+
+.divider {
+  height: 1px;
+  background: #f0edf3;
+  margin: 24px 0 20px;
+}
+
+.inlineRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inlineLabel {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.pill {
+  border: 1px solid #e5dff4;
+  color: #6b5da2;
+  background: rgba(255, 255, 255, 0.68);
+  border-radius: 100px;
+  font-size: 11px;
+  padding: 7px 11px;
+  font-weight: 700;
+}
+
+.saveHint {
+  font-size: 11px;
+  color: #7e7887;
+  margin-top: 11px;
+  min-height: 18px;
+}
+
+.infoBox {
+  border: 1px solid #eeebf5;
+  border-radius: 17px;
+  padding: 13px 14px;
+  background: #f9f8fc;
+  font-size: 11px;
+  color: #756f83;
+  line-height: 1.55;
+  margin-top: 16px;
+}
+
+.infoIcon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #e6e0f9;
+  color: #6555b8;
+  font-size: 11px;
+  font-weight: 800;
+  margin-right: 5px;
+}
+
+@media (max-width: 730px) {
+  .panel {
+    min-height: auto;
+  }
+}

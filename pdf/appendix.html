@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Briqen Creator Studio — AI-Use Appendix</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+@page { size: A4 landscape; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { font-family: 'Inter', -apple-system, sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.page { width: 297mm; height: 210mm; position: relative; background: #FCFAF8; padding: 28px 34px; overflow: hidden; }
+.page::before { content: ''; position: absolute; top: -50px; right: -30px; width: 180px; height: 180px; border-radius: 50%; background: #EEE9FD; z-index: 0; }
+.page::after { content: ''; position: absolute; top: -40px; right: 140px; width: 80px; height: 80px; border-radius: 50%; background: #F5E7EA; z-index: 0; }
+
+.header-label { font-size: 8.2px; font-weight: 800; letter-spacing: 1.8px; color: #5B4CB9; text-transform: uppercase; position: relative; z-index: 1; }
+.title { font-size: 22px; font-weight: 900; color: #2C293B; letter-spacing: -0.8px; margin: 16px 0 4px; position: relative; z-index: 1; }
+.subtitle { font-size: 9px; color: #85808E; margin-bottom: 20px; position: relative; z-index: 1; }
+
+.section { background: #fff; border: 0.7px solid #E7E2EE; border-radius: 12px; padding: 18px 22px; margin-bottom: 12px; position: relative; z-index: 1; }
+.section.purple { background: #F3F0FB; border-color: #E0D8F6; }
+.section-label { font-size: 8.3px; font-weight: 800; letter-spacing: 1px; color: #5B4CB9; text-transform: uppercase; margin-bottom: 8px; }
+.section-text { font-size: 9px; line-height: 1.65; color: #2C293B; }
+.section-text.muted { color: #85808E; }
+.quote { font-style: italic; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.references { font-size: 8px; color: #85808E; line-height: 1.7; }
+.references a { color: #5B4CB9; text-decoration: none; }
+
+.footer { position: absolute; bottom: 22px; left: 34px; right: 34px; display: flex; justify-content: space-between; border-top: 0.8px solid #E8E4EB; padding-top: 8px; }
+.footer span { font-size: 7.5px; color: #85808E; }
+.footer .right { font-weight: 700; }
+
+.proto-note { font-size: 8px; color: #5B4CB9; font-weight: 700; margin-top: 8px; position: relative; z-index: 1; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header-label">AI-ASSISTANCE APPENDIX &nbsp;/&nbsp; OUTSIDE THE TWO-PAGE SUBMISSION LIMIT</div>
+  <h1 class="title">AI use & verification record</h1>
+  <p class="subtitle">Transparent disclosure of AI assistance. Unrelated conversations and sensitive information excluded.</p>
+
+  <div class="section">
+    <div class="section-label">Task-related user prompt / excerpt</div>
+    <p class="section-text quote">"Help me make the best assignment possible ... I want a clear end-to-end workflow ... the best user interface and experience ... premium ... curved backgrounds, like Apple. Take some good references ... evaluate [the] ideas."</p>
+    <div style="height: 12px"></div>
+    <div class="section-label">AI response relied on / excerpt</div>
+    <p class="section-text quote">"Choose a script-first scene-card editor rather than a full timeline. Separate editable project state from asynchronous generation jobs. Retrying must not reset reordered scenes, trims, revised script text or approved media. Show persistent scene-level recovery and explicit export eligibility."</p>
+  </div>
+
+  <div class="two-col">
+    <div class="section purple">
+      <div class="section-label">What AI assisted with</div>
+      <p class="section-text">Product/UX ideation and workflow design; comparison of public references (Descript, Runway, Canva, Apple HIG); React + TypeScript component architecture and Zustand state management; HTML interaction prototype; visual and data-flow sketches; unit test suite (51 tests); PDF layout structure; CSS design system; retry pseudocode; documentation.</p>
+    </div>
+    <div class="section purple">
+      <div class="section-label">Applicant verification</div>
+      <p class="section-text muted"><em>[To be completed by Dev Chiniwala before submission]</em></p>
+      <p class="section-text" style="margin-top: 6px;">Describe here what you personally reviewed, tested, and modified. For example: reviewed generated code, tested prototype in browser, inspected PDF for completeness, verified test results, made editorial design decisions.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Relevant prior work / verified ownership</div>
+    <div class="two-col" style="gap: 24px;">
+      <div>
+        <p class="section-text"><strong>Reticle (open-source)</strong> — Contributions to reticlehq/reticle: 8 merged pull requests including daemon lifecycle testing, injectable seams patterns, and state management improvements.</p>
+        <p class="section-text muted" style="margin-top: 4px;">Public at github.com/DevChiniwala/reticle</p>
+      </div>
+      <div>
+        <p class="section-text"><strong>Private AI tooling</strong> — Production AI tutoring platform involving a Next.js dashboard, AI service integration, and structured state management. No confidential code or customer details shared.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top: 8px; position: relative; z-index: 1;">Public design references / independently reviewed</div>
+  <div class="references" style="position: relative; z-index: 1; margin-top: 4px;">
+    Briqen MI: apps.apple.com/app/id6834710907 &nbsp;|&nbsp; Descript: descript.com/storyboard &nbsp;|&nbsp; Runway: help.runwayml.com &nbsp;|&nbsp; Apple HIG: developer.apple.com/design/human-interface-guidelines
+  </div>
+  <p class="proto-note">Prototype note: interaction states are simulated; no real generation or MP4 export occurs.</p>
+
+  <div class="footer">
+    <span>Dev Chiniwala &nbsp;/&nbsp; AI-assisted development with Claude (Anthropic)</span>
+    <span class="right">BRIQEN &nbsp;|&nbsp; AI APPENDIX</span>
+  </div>
+</div>
+</body>
+</html>

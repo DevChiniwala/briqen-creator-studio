@@ -1,0 +1,285 @@
+.storyboard {
+  background: rgba(255, 255, 255, 0.91);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-top: 17px;
+  padding: 20px 24px 18px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.headerTitle {
+  font-size: 15px;
+  font-weight: 750;
+  letter-spacing: -0.25px;
+  margin: 0;
+}
+
+.headerTitleMuted {
+  color: #a49aa9;
+  font-weight: 500;
+}
+
+.headerSubtitle {
+  margin: 6px 0 0;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.pill {
+  border: 1px solid #e5dff4;
+  color: #6b5da2;
+  background: rgba(255, 255, 255, 0.68);
+  border-radius: 100px;
+  font-size: 11px;
+  padding: 7px 11px;
+  font-weight: 700;
+}
+
+.items {
+  display: flex;
+  gap: 11px;
+  align-items: stretch;
+  overflow-x: auto;
+  padding: 3px 3px 9px;
+}
+
+.sceneCard {
+  position: relative;
+  flex: 0 0 270px;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  border: 1.4px solid #ebe8ee;
+  border-radius: 17px;
+  background: var(--white);
+  padding: 10px;
+  text-align: left;
+  transition: var(--transition-fast);
+  cursor: pointer;
+  user-select: none;
+  min-height: 118px;
+}
+
+.sceneCard:hover {
+  border-color: #b9aeec;
+  transform: translateY(-1px);
+}
+
+.sceneCard:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 3px;
+}
+
+.sceneCardSelected {
+  border-color: #8879d6;
+  background: #faf9ff;
+  box-shadow: 0 0 0 3px #efedfc;
+}
+
+.sceneCardDragover {
+  border: 2px dashed #6a58c1;
+}
+
+.thumb {
+  height: 93px;
+  width: 93px;
+  flex: none;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.thumbOne {
+  background: linear-gradient(150deg, #e8eee8, #86a4a4 50%, #204956);
+}
+
+.thumbTwo {
+  background: linear-gradient(150deg, #ede1fa, #a29aca 50%, #4f5078);
+}
+
+.thumb::before {
+  content: '';
+  position: absolute;
+  bottom: -35px;
+  left: -23px;
+  width: 160px;
+  height: 89px;
+  border-radius: 45% 58% 0 0;
+  transform: rotate(-17deg);
+}
+
+.thumbOne::before {
+  background: #659c94;
+}
+
+.thumbTwo::before {
+  background: #7777a7;
+}
+
+.thumb::after {
+  content: '';
+  position: absolute;
+  bottom: -43px;
+  left: 19px;
+  width: 150px;
+  height: 90px;
+  border-radius: 45% 58% 0 0;
+  transform: rotate(17deg);
+}
+
+.thumbOne::after {
+  background: #203f4b;
+}
+
+.thumbTwo::after {
+  background: #343b68;
+}
+
+.cardContent {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  flex: 1;
+}
+
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.cardIndex {
+  font-size: 10px;
+  color: #9b93a4;
+  font-weight: 800;
+}
+
+.dragHandle {
+  color: #ada7b8;
+  font-size: 10px;
+}
+
+.cardTitle {
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cardFooter {
+  font-size: 10px;
+  color: #898394;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+}
+
+.miniBadge {
+  font-size: 9px;
+  border-radius: 40px;
+  padding: 4px 6px;
+  background: #ece8fb;
+  color: #6555ad;
+  font-weight: 700;
+}
+
+.miniBadgeGreen {
+  color: #418365;
+  background: #eaf7ef;
+}
+
+.miniBadgeRed {
+  color: #b55651;
+  background: #fcebea;
+}
+
+.moveActions {
+  display: flex;
+  gap: 3px;
+}
+
+.moveBtn {
+  border: 1px solid #eeeaf3;
+  background: var(--white);
+  border-radius: 7px;
+  padding: 2px 5px;
+  color: #8e86a2;
+  font-size: 11px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.moveBtn:hover {
+  border-color: #c5bde6;
+  color: var(--violet);
+}
+
+.bottomRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 4px 0;
+}
+
+.readiness {
+  font-size: 11px;
+  color: #817b8a;
+}
+
+.readinessStrong {
+  color: #453d59;
+  font-weight: 700;
+}
+
+.demoControls {
+  background: #f0eefc;
+  border: 1px solid #e6e0fb;
+  padding: 9px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  color: #6354ac;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.demoBtn {
+  background: var(--white);
+  border: 1px solid #dcd4f7;
+  color: #6554b1;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 750;
+  padding: 5px 8px;
+  cursor: pointer;
+}
+
+.demoBtn:hover {
+  background: #faf8ff;
+  border-color: #b5aae3;
+}
+
+@media (max-width: 730px) {
+  .storyboard {
+    padding: 18px 13px;
+  }
+
+  .demoControls {
+    display: none;
+  }
+
+  .sceneCard {
+    flex: 0 0 240px;
+  }
+}
