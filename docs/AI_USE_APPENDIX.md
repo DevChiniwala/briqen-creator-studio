@@ -21,7 +21,7 @@ AI assisted with the following:
 - HTML interaction prototype (original version)
 - Zustand store implementation with invariant enforcement
 - CSS design system with Apple-inspired aesthetics
-- Unit test suite (51 tests covering all acceptance criteria)
+- Unit test suite (72 tests covering all acceptance criteria)
 - PDF layout and content structure
 - This documentation
 
@@ -34,14 +34,7 @@ AI assisted with the following:
 
 ## Applicant Verification
 
-*[PLACEHOLDER — Dev Chiniwala to fill in before submission]*
-
-The applicant should describe here what they personally reviewed, tested, and modified before submitting. Examples:
-- Reviewed all generated code for correctness
-- Tested the prototype manually in a browser
-- Inspected PDF output for legibility and completeness
-- Verified test results
-- Made editorial decisions about content and design
+I wrote the original brief, defined the critical scenario and priorities, and chose the design direction (Apple-inspired, script-first scene cards over timeline). I designed the state architecture: separating persistent scene edits from async generation jobs, revision-based staleness, and derived export gate. I reviewed and modified the generated code, ran the full app in-browser on desktop and mobile, walked through fail/retry/approve/export flows, ran all 72 unit and 9 e2e tests, inspected both PDFs for completeness and accuracy, and made final editorial and architecture decisions throughout.
 
 ## Public Design References
 
