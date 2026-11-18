@@ -2,12 +2,12 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 
-export default defineConfig({
-  base: '/briqen-creator-studio/',
+export default defineConfig(({ command }) => ({
+  base: command === 'build' ? '/briqen-creator-studio/' : '/',
   plugins: [react()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
   },
-})
+}))
