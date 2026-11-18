@@ -2,6 +2,8 @@
 
 A script-first scene editor for marketers: AI-assisted script, scenes, image/video generation, reorder/trim, and draft export.
 
+**Live demo:** [devchiniwala.github.io/briqen-creator-studio](https://devchiniwala.github.io/briqen-creator-studio/)
+
 Built for the Briqen AI Product Engineering internship exercise.
 
 ## Quick Start
@@ -40,9 +42,11 @@ Apple-inspired aesthetic with warm off-white canvas, lilac/iris accents, generou
 
 ## Demo Controls
 
-The prototype includes "Walk through the assignment" controls at the bottom of the storyboard:
-- **1. Fail generation** — Simulates Scene 2 video generation failure
-- **2. Complete retry** — Simulates successful completion
+The prototype includes demo controls at the bottom of the storyboard:
+- **▶ Auto play** — One-click walkthrough: generates → fails → retries → succeeds → approves
+- **1. Fail** — Simulates Scene 2 video generation failure
+- **2. Succeed** — Simulates successful completion
+- **Reset** — Returns to initial state
 
 A `window.__briqenDemo` API is available for programmatic testing.
 

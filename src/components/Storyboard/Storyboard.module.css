@@ -270,6 +270,26 @@
   border-color: #b5aae3;
 }
 
+.demoBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.demoBtnPrimary {
+  background: #6554b1;
+  color: #fff;
+  border-color: #6554b1;
+}
+
+.demoBtnPrimary:hover {
+  background: #5647a0;
+}
+
+.demoBtnPrimary:disabled {
+  background: #6554b1;
+  color: #fff;
+}
+
 @media (max-width: 730px) {
   .storyboard {
     padding: 18px 13px;

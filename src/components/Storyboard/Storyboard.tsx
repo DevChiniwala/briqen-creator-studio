@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { useEditorStore } from '@/state/store';
 import { selectExportReady, selectExportBlockReason, selectAssetDisplay } from '@/state/selectors';
 import styles from './Storyboard.module.css';
@@ -19,12 +19,20 @@ export function Storyboard({ onToast }: { onToast: (msg: string) => void }) {
   const reorderDrop = useEditorStore((s) => s.reorderDrop);
   const generationFailed = useEditorStore((s) => s.generationFailed);
   const generationSucceeded = useEditorStore((s) => s.generationSucceeded);
+  const retryGeneration = useEditorStore((s) => s.retryGeneration);
+  const approveCandidate = useEditorStore((s) => s.approveCandidate);
   const reset = useEditorStore((s) => s.reset);
 
   const exportReady = useEditorStore(selectExportReady);
   const blockReason = useEditorStore(selectExportBlockReason);
 
   const [dragOverId, setDragOverId] = useState<string | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const timeoutsRef = useRef<number[]>([]);
+
+  useEffect(() => {
+    return () => timeoutsRef.current.forEach(clearTimeout);
+  }, []);
 
   const handleDragStart = useCallback((e: React.DragEvent, sceneId: string) => {
     e.dataTransfer.setData('text/plain', sceneId);
@@ -90,6 +98,50 @@ export function Storyboard({ onToast }: { onToast: (msg: string) => void }) {
     reset();
     onToast('Demo reset to reordered + trimmed example');
   }, [reset, onToast]);
+
+  const handleAutoWalkthrough = useCallback(() => {
+    if (isPlaying) return;
+    timeoutsRef.current.forEach(clearTimeout);
+    timeoutsRef.current = [];
+    setIsPlaying(true);
+
+    const delay = (ms: number) =>
+      new Promise<void>((resolve) => {
+        const id = window.setTimeout(resolve, ms);
+        timeoutsRef.current.push(id);
+      });
+
+    (async () => {
+      reset();
+      selectScene('s2');
+      onToast('Scene 2 is generating video...');
+
+      await delay(2500);
+      const s2Job = useEditorStore.getState().jobsBySceneId['s2'];
+      if (s2Job) {
+        generationFailed('s2', s2Job.jobId, 'Simulated generation failure');
+        onToast('Generation failed — but your edits are safe.');
+      }
+
+      await delay(2500);
+      retryGeneration('s2');
+      onToast('Retrying generation...');
+
+      await delay(3200);
+      const retryJob = useEditorStore.getState().jobsBySceneId['s2'];
+      if (retryJob) {
+        generationSucceeded('s2', retryJob.jobId, `generated_${Date.now()}`);
+        onToast('Generation succeeded! Approve to unlock export.');
+      }
+
+      await delay(2000);
+      approveCandidate('s2');
+      onToast('Asset approved — export is now available!');
+
+      await delay(1000);
+      setIsPlaying(false);
+    })();
+  }, [isPlaying, reset, selectScene, generationFailed, retryGeneration, generationSucceeded, approveCandidate, onToast]);
 
   const sequenceLabel = sceneOrder.map((id) => sceneDisplayNum(id)).join(' → ');
 
@@ -190,10 +242,13 @@ export function Storyboard({ onToast }: { onToast: (msg: string) => void }) {
           )}
         </div>
         <div className={styles.demoControls}>
-          <span>✧ Walk through the assignment</span>
-          <button className={styles.demoBtn} onClick={handleFail}>1. Fail generation</button>
-          <button className={styles.demoBtn} onClick={handleSuccess}>2. Complete retry</button>
-          <button className={styles.demoBtn} onClick={handleReset}>Reset demo</button>
+          <span>{isPlaying ? '▶ Playing walkthrough…' : '✧ Walk through the assignment'}</span>
+          <button className={`${styles.demoBtn} ${styles.demoBtnPrimary}`} onClick={handleAutoWalkthrough} disabled={isPlaying}>
+            ▶ Auto play
+          </button>
+          <button className={styles.demoBtn} onClick={handleFail} disabled={isPlaying}>1. Fail</button>
+          <button className={styles.demoBtn} onClick={handleSuccess} disabled={isPlaying}>2. Succeed</button>
+          <button className={styles.demoBtn} onClick={handleReset} disabled={isPlaying}>Reset</button>
         </div>
       </div>
     </section>

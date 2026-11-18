@@ -169,19 +169,24 @@
 
 .progressBarFill {
   display: block;
-  width: 57%;
+  width: 100%;
   background: #8072d1;
   height: 100%;
   border-radius: 12px;
-  animation: pulse 2s ease infinite;
+  animation: progressSweep 3s ease-out forwards;
 }
 
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 0.65;
+@keyframes progressSweep {
+  from {
+    width: 0%;
+    opacity: 0.7;
   }
-  50% {
+  85% {
+    width: 92%;
+    opacity: 1;
+  }
+  to {
+    width: 100%;
     opacity: 1;
   }
 }

@@ -20,7 +20,7 @@ export function PreviewPanel() {
       </div>
 
       <div className={styles.stage}>
-        <div className={`${styles.videoCanvas} ${canvasClass}`}>
+        <div key={scene.id} className={`${styles.videoCanvas} ${canvasClass}`}>
           <div className={styles.sun} />
           <div className={`${styles.ridge} ${scene.id === 's1' ? styles.sceneOne : ''}`} />
           <div className={`${styles.ridge} ${styles.ridgeSecondary} ${scene.id === 's1' ? styles.sceneOne : ''}`} />
