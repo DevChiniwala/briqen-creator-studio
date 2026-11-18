@@ -67,6 +67,16 @@ describe('selectExportReady', () => {
     });
     expect(selectExportReady(state)).toBe(true);
   });
+
+  it('returns false when sceneOrder references a missing scene ID', () => {
+    const state = makeState({ sceneOrder: ['s1', 's2', 'phantom'] });
+    expect(selectExportReady(state)).toBe(false);
+  });
+
+  it('returns false when sceneOrder is empty', () => {
+    const state = makeState({ sceneOrder: [] });
+    expect(selectExportReady(state)).toBe(false);
+  });
 });
 
 describe('selectApprovedCount', () => {
@@ -121,6 +131,13 @@ describe('selectExportBlockReason', () => {
     expect(reason).not.toBeNull();
     expect(reason).toContain('Scene');
     expect(reason).toContain('approved asset');
+  });
+
+  it('uses stable scene labels, not positional index', () => {
+    const state = makeState({ sceneOrder: ['s2', 's1'] });
+    const reason = selectExportBlockReason(state);
+    expect(reason).toContain('Scene 02');
+    expect(reason).not.toContain('Scene 1');
   });
 });
 

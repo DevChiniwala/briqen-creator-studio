@@ -123,4 +123,50 @@ test.describe('Briqen Creator Studio — Full Scenario', () => {
 
     expect(errors).toEqual([]);
   });
+
+  test('9. UI walkthrough: reorder, trim, fail, retry, approve, export', async ({ page }) => {
+    // Verify initial state via UI
+    const exportBtn = page.locator('button:has-text("Export draft")');
+    await expect(exportBtn).toBeDisabled();
+
+    // Reorder: Scene 2 is at position 0, move Scene 1 earlier to swap order
+    await page.click('button[aria-label="Move Scene 01 earlier"]');
+    await page.waitForTimeout(300);
+
+    // Select Scene 2 by clicking its card
+    await page.click('[aria-label="Select Scene 02"]');
+    await page.waitForTimeout(300);
+
+    // Trim duration: decrease from 3.0s to 2.5s
+    await page.click('button[aria-label="Decrease duration"]');
+    await page.waitForTimeout(300);
+    const state1 = await page.evaluate(() => window.__briqenDemo?.getState());
+    expect(state1!.scenesById.s2.durationSec).toBe(2.5);
+
+    // Fail via demo button
+    await page.click('button:has-text("1. Fail")');
+    await page.waitForTimeout(500);
+
+    // Verify Retry button appears in Inspector and click it
+    await page.click('button:has-text("↻ Retry")');
+    await page.waitForTimeout(500);
+
+    // Succeed via demo button
+    await page.click('button:has-text("2. Succeed")');
+    await page.waitForTimeout(500);
+
+    // Approve via Inspector approve button
+    await page.click('button:has-text("✓ Approve")');
+    await page.waitForTimeout(500);
+
+    // Verify export is now enabled
+    await expect(exportBtn).toBeEnabled();
+
+    // Verify scene edits were preserved through the whole flow
+    const finalState = await page.evaluate(() => window.__briqenDemo?.getState());
+    expect(finalState!.sceneOrder).toEqual(['s1', 's2']);
+    expect(finalState!.scenesById.s2.durationSec).toBe(2.5);
+    expect(finalState!.scenesById.s1.approvedAssetId).toBe('asset_approved_01');
+    expect(finalState!.scenesById.s2.approvedAssetId).toBeTruthy();
+  });
 });

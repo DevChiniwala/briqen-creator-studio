@@ -6,7 +6,7 @@ AI (Claude, Anthropic) was used extensively throughout this submission — from 
 
 ## What I Did
 
-I wrote the original brief, defined the critical scenario and priorities, and chose the design direction (Apple-inspired, script-first scene cards over timeline). I designed the state architecture: separating persistent scene edits from async generation jobs, revision-based staleness, and derived export gate. I reviewed and modified the generated code, ran the full app in-browser on desktop and mobile, walked through fail/retry/approve/export flows, ran all 72 unit and 9 e2e tests, inspected both PDFs for completeness and accuracy, and made final editorial and architecture decisions throughout.
+I interpreted Briqen's assignment, prioritized the failure-recovery scenario, chose the script-first scene-card approach, and used Claude to assist with implementation, testing, and documentation. I designed the state architecture: separating persistent scene edits from async generation jobs, revision-based staleness, and derived export gate. I reviewed and modified the generated code, ran the full app in-browser on desktop and mobile, walked through fail/retry/approve/export flows, ran all 72 unit and 9 e2e tests, inspected both PDFs for completeness and accuracy, and made final editorial and architecture decisions throughout.
 
 ## Public Design References
 

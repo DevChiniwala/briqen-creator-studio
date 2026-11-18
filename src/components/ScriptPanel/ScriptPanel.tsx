@@ -1,5 +1,7 @@
 import { useRef, useCallback } from 'react';
 import { useEditorStore } from '@/state/store';
+import { useToast } from '@/components/shared/Toast';
+import { sceneDisplayLabel } from '@/utils/sceneLabels';
 import styles from './ScriptPanel.module.css';
 
 export function ScriptPanel() {
@@ -8,8 +10,9 @@ export function ScriptPanel() {
   const sceneOrder = useEditorStore((s) => s.sceneOrder);
   const updateScript = useEditorStore((s) => s.updateScript);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const toast = useToast();
 
-  const sceneIndex = sceneOrder.indexOf(selectedId) + 1;
+  const sceneLabel = sceneDisplayLabel(selectedId);
   const totalScenes = sceneOrder.length;
 
   const handleChange = useCallback(
@@ -26,9 +29,16 @@ export function ScriptPanel() {
       <div className={styles.heading}>
         <h2 className={styles.headingTitle}>Script editor</h2>
         <span className={styles.sceneNum}>
-          SCENE {String(sceneIndex).padStart(2, '0')} / {String(totalScenes).padStart(2, '0')}
+          SCENE {sceneLabel} / {String(totalScenes).padStart(2, '0')}
         </span>
       </div>
+
+      <button
+        className={styles.splitBtn}
+        onClick={() => toast('Script splitting is simulated in this prototype.')}
+      >
+        ✂ Split into scenes
+      </button>
 
       <span className={styles.label}>SCENE TITLE</span>
       <div className={styles.sceneTitle}>{scene.title}</div>

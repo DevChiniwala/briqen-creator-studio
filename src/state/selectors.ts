@@ -1,4 +1,5 @@
 import type { EditorState, Scene, GenerationAttempt, JobStatus } from '../types';
+import { sceneDisplayLabel } from '../utils/sceneLabels';
 
 export function selectSelectedScene(state: EditorState): Scene | undefined {
   return state.scenesById[state.selectedSceneId];
@@ -9,11 +10,12 @@ export function selectActiveJob(state: EditorState, sceneId: string): Generation
 }
 
 export function selectExportReady(state: EditorState): boolean {
-  return state.sceneOrder.every((id) => state.scenesById[id]?.approvedAssetId !== null);
+  return state.sceneOrder.length > 0 &&
+    state.sceneOrder.every((id) => Boolean(state.scenesById[id]?.approvedAssetId));
 }
 
 export function selectApprovedCount(state: EditorState): number {
-  return Object.values(state.scenesById).filter((s) => s.approvedAssetId !== null).length;
+  return Object.values(state.scenesById).filter((s) => Boolean(s.approvedAssetId)).length;
 }
 
 export function selectTotalDuration(state: EditorState): number {
@@ -23,10 +25,7 @@ export function selectTotalDuration(state: EditorState): number {
 export function selectExportBlockReason(state: EditorState): string | null {
   const missing = state.sceneOrder.filter((id) => !state.scenesById[id]?.approvedAssetId);
   if (missing.length === 0) return null;
-  const names = missing.map((id) => {
-    const idx = state.sceneOrder.indexOf(id) + 1;
-    return `Scene ${idx}`;
-  });
+  const names = missing.map((id) => `Scene ${sceneDisplayLabel(id)}`);
   return `${names.join(', ')} need${missing.length > 1 ? '' : 's'} an approved asset.`;
 }
 

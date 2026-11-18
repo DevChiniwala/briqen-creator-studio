@@ -1,13 +1,8 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { useEditorStore } from '@/state/store';
 import { selectExportReady, selectExportBlockReason, selectAssetDisplay } from '@/state/selectors';
+import { sceneDisplayLabel } from '@/utils/sceneLabels';
 import styles from './Storyboard.module.css';
-
-const SCENE_LABELS: Record<string, string> = { s1: '01', s2: '02' };
-
-function sceneDisplayNum(id: string): string {
-  return SCENE_LABELS[id] ?? id;
-}
 
 export function Storyboard({ onToast }: { onToast: (msg: string) => void }) {
   const sceneOrder = useEditorStore((s) => s.sceneOrder);
@@ -143,7 +138,7 @@ export function Storyboard({ onToast }: { onToast: (msg: string) => void }) {
     })();
   }, [isPlaying, reset, selectScene, generationFailed, retryGeneration, generationSucceeded, approveCandidate, onToast]);
 
-  const sequenceLabel = sceneOrder.map((id) => sceneDisplayNum(id)).join(' → ');
+  const sequenceLabel = sceneOrder.map((id) => sceneDisplayLabel(id)).join(' → ');
 
   return (
     <section className={styles.storyboard}>
@@ -194,12 +189,12 @@ export function Storyboard({ onToast }: { onToast: (msg: string) => void }) {
               onDrop={(e) => handleDrop(e, id)}
               role="button"
               tabIndex={0}
-              aria-label={`Select Scene ${sceneDisplayNum(id)}`}
+              aria-label={`Select Scene ${sceneDisplayLabel(id)}`}
             >
               <div className={`${styles.thumb} ${id === 's1' ? styles.thumbOne : styles.thumbTwo}`} />
               <div className={styles.cardContent}>
                 <div className={styles.cardTop}>
-                  <span className={styles.cardIndex}>SCENE {sceneDisplayNum(id)}</span>
+                  <span className={styles.cardIndex}>SCENE {sceneDisplayLabel(id)}</span>
                   <span className={styles.dragHandle}>⠿</span>
                 </div>
                 <div className={styles.cardTitle}>{scene.title}</div>
@@ -211,14 +206,14 @@ export function Storyboard({ onToast }: { onToast: (msg: string) => void }) {
                   <button
                     className={styles.moveBtn}
                     onClick={(e) => handleMove(e, id, -1)}
-                    aria-label={`Move Scene ${sceneDisplayNum(id)} earlier`}
+                    aria-label={`Move Scene ${sceneDisplayLabel(id)} earlier`}
                   >
                     ←
                   </button>
                   <button
                     className={styles.moveBtn}
                     onClick={(e) => handleMove(e, id, 1)}
-                    aria-label={`Move Scene ${sceneDisplayNum(id)} later`}
+                    aria-label={`Move Scene ${sceneDisplayLabel(id)} later`}
                   >
                     →
                   </button>
