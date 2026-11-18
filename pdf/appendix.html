@@ -41,35 +41,36 @@ html, body { font-family: 'Inter', -apple-system, sans-serif; -webkit-print-colo
   <h1 class="title">AI use & verification record</h1>
   <p class="subtitle">Transparent disclosure of AI assistance. Unrelated conversations and sensitive information excluded.</p>
 
-  <div class="two-col">
-    <div class="section purple">
-      <div class="section-label">How AI was used</div>
-      <p class="section-text">AI (Claude, Anthropic) was used extensively throughout this submission — from ideation and architecture design to implementation, testing, and documentation. The prototype code, state management, component architecture, unit/e2e tests, CSS design system, PDF layout, and this appendix were all developed with AI assistance.</p>
-    </div>
-    <div class="section purple">
-      <div class="section-label">What I did</div>
-      <p class="section-text" style="line-height: 1.7;">I wrote the original brief, defined the critical scenario and priorities, and chose the design direction (Apple-inspired, script-first scene cards over timeline). I designed the state architecture: separating persistent scene edits from async generation jobs, revision-based staleness, and derived export gate. I reviewed and modified the generated code, ran the full app in-browser on desktop and mobile, walked through fail/retry/approve/export flows, ran all 72 unit and 9 e2e tests, inspected both PDFs for completeness and accuracy, and made final editorial and architecture decisions throughout.</p>
-    </div>
+  <div class="section">
+    <div class="section-label">Prompt 1 — Architecture &amp; state model</div>
+    <p class="section-text quote" style="margin-bottom: 8px;">"Design the state model for a scene editor where generation jobs run asynchronously. Constraint: reorder and trim must never restart a running generation. The user's edits (script, order, duration) and approved assets must survive a generation failure. Separate persistent scene state from job state. Use revision numbers to detect stale completions — a job that finishes after the script changed must be flagged, never auto-approved. Export eligibility should be a derived selector, not a mutable boolean."</p>
+    <div class="section-label" style="margin-top: 10px;">AI response relied on</div>
+    <p class="section-text" style="line-height: 1.6;">Proposed two normalized stores — <code style="font-family:'JetBrains Mono',monospace;font-size:8px;background:#F3F0FB;padding:1px 3px;border-radius:3px">scenesById</code> (user-editable: script, mediaType, durationSec, approvedAssetId, contentRevision) and <code style="font-family:'JetBrains Mono',monospace;font-size:8px;background:#F3F0FB;padding:1px 3px;border-radius:3px">jobsBySceneId</code> (system-managed: jobId, inputSnapshot, inputRevision, status, candidateAssetId). Reorder touches only <code style="font-family:'JetBrains Mono',monospace;font-size:8px;background:#F3F0FB;padding:1px 3px;border-radius:3px">sceneOrder</code>. Retry snapshots the current scene state and creates a fresh job with a UUID idempotency key. On completion, if <code style="font-family:'JetBrains Mono',monospace;font-size:8px;background:#F3F0FB;padding:1px 3px;border-radius:3px">inputRevision !== contentRevision</code>, mark as "outdated." Export gate: <code style="font-family:'JetBrains Mono',monospace;font-size:8px;background:#F3F0FB;padding:1px 3px;border-radius:3px">sceneOrder.every(id => scenesById[id].approvedAssetId !== null)</code>.</p>
   </div>
 
   <div class="section">
-    <div class="section-label">Relevant prior work / verified ownership</div>
-    <div class="two-col" style="gap: 24px;">
-      <div>
-        <p class="section-text"><strong>Reticle (open-source)</strong> — Contributions to reticlehq/reticle: 8 merged pull requests including daemon lifecycle testing, injectable seams patterns, and state management improvements.</p>
-        <p class="section-text muted" style="margin-top: 4px;">Public at github.com/DevChiniwala/reticle</p>
-      </div>
-      <div>
-        <p class="section-text"><strong>Private AI tooling</strong> — Production AI tutoring platform involving a Next.js dashboard, AI service integration, and structured state management. No confidential code or customer details shared.</p>
-      </div>
+    <div class="section-label">Prompt 2 — Code review &amp; invariant verification</div>
+    <p class="section-text quote" style="margin-bottom: 8px;">"Run a comprehensive review of the full codebase. Check: are there correctness bugs in the state layer? Does every action preserve the invariants from the assignment scenario? Are there untested store actions or selectors? Check the Zustand subscription patterns for stale-render bugs. Report every issue with file, line, and severity."</p>
+    <div class="section-label" style="margin-top: 10px;">AI response relied on</div>
+    <p class="section-text" style="line-height: 1.6;">Found 3 critical issues: failure message hardcoded "video" instead of interpolating mediaType; selector return type lied about nullability; Storyboard bypassed Zustand subscriptions using getState() during render. Found 4 untested store actions and the critical scenario only tested from pre-baked state, not as live operations. All issues were fixed and 22 new tests added (72 unit + 9 e2e total).</p>
+  </div>
+
+  <div class="two-col">
+    <div class="section purple">
+      <div class="section-label">What I changed &amp; verified</div>
+      <p class="section-text" style="line-height: 1.7;">I wrote the original brief, defined the critical scenario and priorities, and chose the design direction (Apple-inspired, script-first scene cards over timeline). I designed the state architecture: separating persistent scene edits from async generation jobs, revision-based staleness, and derived export gate. I reviewed and modified the generated code, ran the full app in-browser on desktop and mobile, walked through fail/retry/approve/export flows, ran all 72 unit and 9 e2e tests, inspected both PDFs for completeness and accuracy, and made final editorial and architecture decisions throughout.</p>
+    </div>
+    <div class="section purple">
+      <div class="section-label">Prior work</div>
+      <p class="section-text"><strong>Reticle (open-source)</strong> — Contributions to reticlehq/reticle: 8 merged PRs covering daemon lifecycle testing, injectable seams patterns, and state management.</p>
+      <p class="section-text muted" style="margin-top: 4px;">Public at github.com/DevChiniwala</p>
+      <p class="section-text" style="margin-top: 6px;"><strong>Private AI tooling</strong> — Production AI tutoring platform: Next.js dashboard, AI service integration, structured state management for adaptive learning.</p>
     </div>
   </div>
 
-  <div class="section-label" style="margin-top: 8px; position: relative; z-index: 1;">Public design references / independently reviewed</div>
-  <div class="references" style="position: relative; z-index: 1; margin-top: 4px;">
-    Briqen MI: apps.apple.com/app/id6834710907 &nbsp;|&nbsp; Descript: descript.com/storyboard &nbsp;|&nbsp; Runway: help.runwayml.com &nbsp;|&nbsp; Apple HIG: developer.apple.com/design/human-interface-guidelines
+  <div class="references" style="position: relative; z-index: 1; margin-top: 6px;">
+    References: Briqen MI (apps.apple.com/app/id6834710907) &nbsp;|&nbsp; Descript Storyboard &nbsp;|&nbsp; Runway &nbsp;|&nbsp; Apple HIG &nbsp;&nbsp;•&nbsp;&nbsp; Prototype: all generation is simulated; no real API calls or MP4 export.
   </div>
-  <p class="proto-note">Prototype note: interaction states are simulated; no real generation or MP4 export occurs.</p>
 
   <div class="footer">
     <span>Dev Chiniwala &nbsp;/&nbsp; AI-assisted development with Claude (Anthropic)</span>
